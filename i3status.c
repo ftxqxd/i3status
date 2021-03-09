@@ -355,6 +355,14 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
+    cfg_opt_t ndate_opts[] = {
+        CFG_STR("format", "%Y %B's %W %A %H:%M", CFGF_NONE),
+        CFG_CUSTOM_ALIGN_OPT,
+        CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
+        CFG_END()};
+
     cfg_opt_t ddate_opts[] = {
         CFG_STR("format", "%{%a, %b %d%}, %Y%N - %H", CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
@@ -468,6 +476,7 @@ int main(int argc, char *argv[]) {
         CFG_SEC("ipv6", ipv6_opts, CFGF_NONE),
         CFG_SEC("time", time_opts, CFGF_NONE),
         CFG_SEC("tztime", tztime_opts, CFGF_TITLE | CFGF_MULTI),
+        CFG_SEC("ndate", ndate_opts, CFGF_NONE),
         CFG_SEC("ddate", ddate_opts, CFGF_NONE),
         CFG_SEC("load", load_opts, CFGF_NONE),
         CFG_SEC("memory", memory_opts, CFGF_NONE),
@@ -740,6 +749,12 @@ int main(int argc, char *argv[]) {
             CASE_SEC_TITLE("tztime") {
                 SEC_OPEN_MAP("tztime");
                 print_time(json_gen, buffer, title, cfg_getstr(sec, "format"), cfg_getstr(sec, "timezone"), cfg_getstr(sec, "locale"), cfg_getstr(sec, "format_time"), cfg_getbool(sec, "hide_if_equals_localtime"), tv.tv_sec);
+                SEC_CLOSE_MAP;
+            }
+
+            CASE_SEC("ndate") {
+                SEC_OPEN_MAP("ndate");
+                print_ndate(json_gen, buffer, cfg_getstr(sec, "format"), tv.tv_sec);
                 SEC_CLOSE_MAP;
             }
 

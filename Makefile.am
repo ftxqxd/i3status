@@ -51,6 +51,7 @@ i3status_LDADD = \
 i3status_SOURCES = \
 	include/i3status.h \
 	include/queue.h \
+	include/newcal.h \
 	i3status.c \
 	src/auto_detect_format.c \
 	src/first_network_device.c \
@@ -60,6 +61,7 @@ i3status_SOURCES = \
 	src/print_battery_info.c \
 	src/print_cpu_temperature.c \
 	src/print_cpu_usage.c \
+	src/print_ndate.c \
 	src/print_ddate.c \
 	src/print_disk_info.c \
 	src/print_eth_info.c \
