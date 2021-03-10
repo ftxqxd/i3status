@@ -30,13 +30,13 @@ struct newcal_tm *newcal_gmtime(const time_t *timep, struct newcal_tm *result)
               weeks   = days / 7,
               gcycles = weeks / 20871,
               gweeks  = weeks % 20871,
-              ccycles = gweeks / 2348,
-              cweeks  = gweeks % 2348,
+              ccycles = gweeks / 2087,
+              cweeks  = gweeks % 2087,
               lcycles = cweeks / 261,
               lweeks  = cweeks % 261,
-              year    = gcycles*400 + ccycles*45 + lcycles*5 + lweeks/52,
-              isleap  = (lweeks != 260) && (year % 5 == 0) && (year % 400 % 45 != 0),
-              yweeks  = weeks - gcycles*20871 - ccycles*2348 - lcycles*261 - lweeks/52*52 + isleap;
+              year    = gcycles*400 + ccycles*40 + lcycles*5 + lweeks/52,
+              isleap  = lweeks != 260 && year % 5 == 0 && (year % 40 != 0 || year % 400 == 0),
+              yweeks  = weeks - gcycles*20871 - ccycles*2087 - lcycles*261 - lweeks/52*52 + isleap;
 
     result->wday = days % 7;
     result->week = yweeks % 13 + 1;
