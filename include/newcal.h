@@ -11,12 +11,12 @@ struct newcal_tm {
 
     int wday; /* Day of week (Mon = 0, Sun = 6) */
     int week; /* Week of season, starting from 1 */
-    int seas; /* Season of year (0-3) */
+    int seas; /* Season of year (0-3, 4 = Leap) */
 
     int year; /* Number of years since 1900 */
 };
 
-const char *newcal_snames[4]  = { "South", "East", "North", "West" };
+const char *newcal_snames[5]  = { "South", "East", "North", "West", "Leap" };
 const char *newcal_dnames[7]  = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 const char *newcal_wnames[13] = { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th" };
 
@@ -86,6 +86,13 @@ size_t newcal_strftime(char *s, size_t max, const char *format, const struct new
             break;
         case 'u':
             i += snprintf(&s[i], max - i, "%d", tm->wday + 1);
+            if (i >= max) return i;
+            break;
+        case 'V':
+            if (tm->seas < 4)
+                i += snprintf(&s[i], max - i, "%s's %s", newcal_snames[tm->seas], newcal_wnames[tm->week - 1]);
+            else
+                i += snprintf(&s[i], max - i, "%s", newcal_snames[tm->seas]);
             if (i >= max) return i;
             break;
 
