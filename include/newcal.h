@@ -26,7 +26,7 @@ struct newcal_tm *newcal_gmtime(const time_t *timep, struct newcal_tm *result)
     result->min  = *timep / 60 % 60;
     result->hour = *timep / 3600 % 24;
 
-    const int days    = *timep / 3600 / 24 + 135152,
+    const int days    = *timep / 3600 / 24 + 719169,
               weeks   = days / 7,
               gcycles = weeks / 20871,
               gweeks  = weeks % 20871,
@@ -34,15 +34,15 @@ struct newcal_tm *newcal_gmtime(const time_t *timep, struct newcal_tm *result)
               cweeks  = gweeks % 2087,
               lcycles = cweeks / 261,
               lweeks  = cweeks % 261,
-              year    = gcycles*400 + ccycles*40 + lcycles*5 + lweeks/52,
-              isleap  = lweeks != 260 && year % 5 == 0 && (year % 40 != 0 || year % 400 == 0),
-              yweeks  = weeks - gcycles*20871 - ccycles*2087 - lcycles*261 - lweeks/52*52 + isleap;
+              isleap  = lweeks == 260 || ccycles == 10,
+              year    = gcycles*400 + ccycles*40 + lcycles*5 + lweeks/52 - isleap,
+              yweeks  = isleap ? 53 : weeks - gcycles*20871 - ccycles*2087 - lcycles*261 - lweeks/52*52;
 
     result->wday = days % 7;
     result->week = yweeks % 13 + 1;
     result->seas = yweeks / 13;
 
-    result->year = year - 300;
+    result->year = year - 1899;
 
     return result;
 }
